@@ -1,4 +1,4 @@
-package edu.cmu.cs.mvelezce.implementation.string.consumer;
+package edu.cmu.cs.mvelezce.implementation.string.producer;
 
 import edu.cmu.cs.mvelezce.producer.IProducer;
 import edu.cmu.cs.mvelezce.setup.IProducerConsumer;

@@ -1,8 +1,8 @@
 package edu.cmu.cs.mvelezce.implementation.string.setup;
 
 import edu.cmu.cs.mvelezce.consumer.IConsumer;
-import edu.cmu.cs.mvelezce.implementation.string.consumer.StringProducer;
-import edu.cmu.cs.mvelezce.implementation.string.producer.StringConsumer;
+import edu.cmu.cs.mvelezce.implementation.string.producer.StringProducer;
+import edu.cmu.cs.mvelezce.implementation.string.consumer.StringConsumer;
 import edu.cmu.cs.mvelezce.producer.IProducer;
 import edu.cmu.cs.mvelezce.setup.IProducerConsumer;
 import edu.cmu.cs.mvelezce.setup.ProducerConsumerSetup;

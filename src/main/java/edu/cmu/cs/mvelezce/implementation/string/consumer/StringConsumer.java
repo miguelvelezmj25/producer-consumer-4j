@@ -15,11 +15,12 @@ public final class StringConsumer implements IConsumer<String> {
 
   @Override
   public void consume(String message) {
-    System.out.println("Consuming message: " + message);
+    System.out.println(
+        "Consuming message: " + message + " from " + Thread.currentThread().getName());
   }
 
   @Override
-  public boolean terminate(String message) {
+  public boolean shouldTerminate(String message) {
     return IProducerConsumer.EOF_PRODUCER.equals(message);
   }
 
@@ -29,7 +30,8 @@ public final class StringConsumer implements IConsumer<String> {
       try {
         String data = this.queue.take();
 
-        if (this.terminate(data)) {
+        if (this.shouldTerminate(data)) {
+          System.out.println("Terminating from " + Thread.currentThread().getName());
           break;
         }
 

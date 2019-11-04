@@ -4,37 +4,44 @@ import edu.cmu.cs.mvelezce.producer.IProducer;
 import edu.cmu.cs.mvelezce.setup.IProducerConsumer;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class StringProducer implements IProducer<String> {
 
   private final BlockingQueue<String> queue;
+  private final BlockingQueue<String> inputQueue;
 
-  public StringProducer(BlockingQueue<String> queue) {
+  private final AtomicBoolean shouldTerminate = new AtomicBoolean(false);
+
+  public StringProducer(BlockingQueue<String> queue, BlockingQueue<String> inputQueue) {
     this.queue = queue;
+    this.inputQueue = inputQueue;
   }
 
   @Override
-  public String produce() {
-    throw new UnsupportedOperationException("Method should not be called");
-  }
-
-  private String produce(int iter) {
-    return iter + "";
+  public boolean shouldTerminate() {
+    return shouldTerminate.get();
   }
 
   @Override
-  public boolean terminate() {
-    throw new UnsupportedOperationException("Method should not be called");
+  public void terminate() {
+    try {
+      this.inputQueue.put(IProducerConsumer.EOF_PRODUCER);
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
+    this.shouldTerminate.set(true);
   }
 
   @Override
   public void run() {
+
     try {
-      for (int i = 0; i < 20; i++) {
-        this.queue.put(this.produce(i));
+      while (!this.shouldTerminate()) {
+        this.queue.put(this.inputQueue.take());
       }
 
-      this.queue.put(IProducerConsumer.EOF_PRODUCER);
+      System.out.println("Terminating from " + Thread.currentThread().getName());
     } catch (InterruptedException ie) {
       throw new RuntimeException(ie);
     }
